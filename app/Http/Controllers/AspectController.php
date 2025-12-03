@@ -52,7 +52,7 @@ class AspectController extends DefaultController
 
         $gradingOptions = Grading::join('divisions', 'divisions.id', '=', 'gradings.division_id')
             ->select(DB::raw('CONCAT_WS(" ", gradings.name, divisions.name) as text'), 'gradings.id as value')
-            ->get()->toArray();
+            ->get();
 
             
         $fields = [

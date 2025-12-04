@@ -99,6 +99,51 @@ class Sidebar
           'ajax_load' => false,
           'childrens' => []
         ],
+        [
+          'name' => 'Employee',
+          'icon' => 'ti ti-menu',
+          'key' => 'employee',
+          'base_key' => 'employee',
+          'visibility' => true,
+          'ajax_load' => false,
+          'childrens' => []
+        ],
+        [
+          'name' => 'Evaluator',
+          'icon' => 'ti ti-menu',
+          'key' => 'evaluator',
+          'base_key' => 'evaluator',
+          'visibility' => true,
+          'ajax_load' => false,
+          'childrens' => []
+        ],
+        [
+          'name' => 'Indicator',
+          'icon' => 'ti ti-menu',
+          'key' => 'indicator',
+          'base_key' => 'indicator',
+          'visibility' => true,
+          'ajax_load' => false,
+          'childrens' => []
+        ],
+        [
+          'name' => 'Kpi Template',
+          'icon' => 'ti ti-menu',
+          'key' => 'kpi-template',
+          'base_key' => 'kpi-template',
+          'visibility' => true,
+          'ajax_load' => false,
+          'childrens' => []
+        ],
+        [
+          'name' => 'Kpi Entry',
+          'icon' => 'ti ti-menu',
+          'key' => 'kpi-entry',
+          'base_key' => 'kpi-entry',
+          'visibility' => true,
+          'ajax_load' => false,
+          'childrens' => []
+        ],
       ];
   }
 

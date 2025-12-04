@@ -4,28 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Grading;
-use App\Models\Employee;
 
-
-class Division extends Model
+class KpiTemplate extends Model
 {
     use HasFactory;
 
-    protected $table = 'divisions';
+    protected $table = 'kpi_templates';
     protected $primaryKey = 'id';
-    protected $fillable = ["name","category"];
+    protected $fillable = ["aspect_id","title","description","measurement_instruction","measurement_formula","measurement_unit","kpi_type","period","data_source"];
     protected $appends = ['btn_delete', 'btn_edit', 'btn_show'];
 
-    public function gradings()
+    public function aspect()
     {
-        return $this->hasMany(Grading::class);
+        return $this->belongsTo(Aspect::class);
     }
 
-    public function employees()
-    {
-        return $this->hasMany(Employee::class, 'division', 'name');
-    }
+
     public function getBtnDeleteAttribute()
     {
         $html = "<button type='button' class='btn btn-outline-danger btn-sm radius-6' style='margin:1px;' data-bs-toggle='modal' data-bs-target='#modalDelete' onclick='setDelete(" . json_encode($this->id) . ")'>

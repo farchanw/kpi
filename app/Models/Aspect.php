@@ -14,6 +14,10 @@ class Aspect extends Model
     protected $fillable = ["name","grading_id"];
     protected $appends = ['btn_delete', 'btn_edit', 'btn_show'];
 
+    public function grading()
+    {
+        return $this->belongsTo(Grading::class);
+    }
 
     public function getBtnDeleteAttribute()
     {

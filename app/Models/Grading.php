@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Division;
+use App\Models\Aspect;
 
 class Grading extends Model
 {
@@ -14,6 +16,15 @@ class Grading extends Model
     protected $fillable = ["name","division_id"];
     protected $appends = ['btn_delete', 'btn_edit', 'btn_show'];
 
+    public function division()
+    {
+        return $this->belongsTo(Division::class);
+    }
+
+    public function aspects()
+    {
+        return $this->hasMany(Aspect::class);
+    }
 
     public function getBtnDeleteAttribute()
     {

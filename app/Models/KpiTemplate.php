@@ -19,6 +19,12 @@ class KpiTemplate extends Model
         return $this->belongsTo(Aspect::class);
     }
 
+    public function entries()
+    {
+        return $this->hasMany(KpiEntry::class, 'kpi_template_id');
+    }
+
+
 
     public function getBtnDeleteAttribute()
     {

@@ -212,4 +212,14 @@ class KpiTemplateController extends DefaultController
         return $dataQueries;
     }
 
+    protected function show($id)
+    {
+        $singleData = $this->defaultDataQuery()->where('kpi_templates.id', $id)->first();
+        unset($singleData['id']);
+
+        $data['detail'] = $singleData;
+
+        return view('easyadmin::backend.idev.show-default', $data);
+    }
+
 }

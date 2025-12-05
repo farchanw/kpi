@@ -9,6 +9,14 @@ use App\Http\Controllers\IndicatorController;
 use App\Http\Controllers\KpiTemplateController;
 use App\Http\Controllers\EvaluatorController;
 use App\Http\Controllers\KpiEntryController;
+use App\Http\Controllers\KpiEvaluationController;
+use App\Http\Controllers\DashboardController;
+
+Route::resource('dashboard', DashboardController::class);
+Route::get('dashboard-api', [DashboardController::class, 'indexApi'])->name('dashboard.listapi');
+Route::get('dashboard-export-pdf-default', [DashboardController::class, 'exportPdf'])->name('dashboard.export-pdf-default');
+Route::get('dashboard-export-excel-default', [DashboardController::class, 'exportExcel'])->name('dashboard.export-excel-default');
+Route::post('dashboard-import-excel-default', [DashboardController::class, 'importExcel'])->name('dashboard.import-excel-default');
 
 Route::resource('division', DivisionController::class);
 Route::get('division-api', [DivisionController::class, 'indexApi'])->name('division.listapi');
@@ -34,12 +42,6 @@ Route::get('employee-export-pdf-default', [EmployeeController::class, 'exportPdf
 Route::get('employee-export-excel-default', [EmployeeController::class, 'exportExcel'])->name('employee.export-excel-default');
 Route::post('employee-import-excel-default', [EmployeeController::class, 'importExcel'])->name('employee.import-excel-default');
 
-Route::resource('indicator', IndicatorController::class);
-Route::get('indicator-api', [IndicatorController::class, 'indexApi'])->name('indicator.listapi');
-Route::get('indicator-export-pdf-default', [IndicatorController::class, 'exportPdf'])->name('indicator.export-pdf-default');
-Route::get('indicator-export-excel-default', [IndicatorController::class, 'exportExcel'])->name('indicator.export-excel-default');
-Route::post('indicator-import-excel-default', [IndicatorController::class, 'importExcel'])->name('indicator.import-excel-default');
-
 Route::resource('kpi-template', KpiTemplateController::class);
 Route::get('kpi-template-api', [KpiTemplateController::class, 'indexApi'])->name('kpi-template.listapi');
 Route::get('kpi-template-export-pdf-default', [KpiTemplateController::class, 'exportPdf'])->name('kpi-template.export-pdf-default');       
@@ -57,3 +59,9 @@ Route::get('kpi-entry-api', [KpiEntryController::class, 'indexApi'])->name('kpi-
 Route::get('kpi-entry-export-pdf-default', [KpiEntryController::class, 'exportPdf'])->name('kpi-entry.export-pdf-default');
 Route::get('kpi-entry-export-excel-default', [KpiEntryController::class, 'exportExcel'])->name('kpi-entry.export-excel-default');
 Route::post('kpi-entry-import-excel-default', [KpiEntryController::class, 'importExcel'])->name('kpi-entry.import-excel-default');
+
+Route::resource('kpi-evaluation', KpiEvaluationController::class);
+Route::get('kpi-evaluation-api', [KpiEvaluationController::class, 'indexApi'])->name('kpi-evaluation.listapi');
+Route::get('kpi-evaluation-export-pdf-default', [KpiEvaluationController::class, 'exportPdf'])->name('kpi-evaluation.export-pdf-default');
+Route::get('kpi-evaluation-export-excel-default', [KpiEvaluationController::class, 'exportExcel'])->name('kpi-evaluation.export-excel-default');
+Route::post('kpi-evaluation-import-excel-default', [KpiEvaluationController::class, 'importExcel'])->name('kpi-evaluation.import-excel-default');

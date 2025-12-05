@@ -11,9 +11,18 @@ class KpiEntry extends Model
 
     protected $table = 'kpi_entries';
     protected $primaryKey = 'id';
-    protected $fillable = ["user_id","evaluator_id","key_perf_area","kpi_template_id","weight","target","actual","score","final_score"];
+    protected $fillable = ["kpi_evaluation_id","key_perf_area","kpi_template_id","weight","target","actual"];
     protected $appends = ['btn_delete', 'btn_edit', 'btn_show'];
 
+    public function evaluation()
+    {
+        return $this->belongsTo(KpiEvaluation::class, 'kpi_evaluation_id');
+    }
+
+    public function template()
+    {
+        return $this->belongsTo(KpiTemplate::class, 'kpi_template_id');
+    }
 
     public function getBtnDeleteAttribute()
     {

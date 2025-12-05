@@ -117,11 +117,22 @@ class Sidebar
           'ajax_load' => false,
           'childrens' => []
         ],
+        /*         
         [
           'name' => 'Indicator',
           'icon' => 'ti ti-menu',
           'key' => 'indicator',
           'base_key' => 'indicator',
+          'visibility' => true,
+          'ajax_load' => false,
+          'childrens' => []
+        ], 
+        */
+        [
+          'name' => 'Kpi Evaluation',
+          'icon' => 'ti ti-menu',
+          'key' => 'kpi-evaluation',
+          'base_key' => 'kpi-evaluation',
           'visibility' => true,
           'ajax_load' => false,
           'childrens' => []

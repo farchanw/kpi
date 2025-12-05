@@ -134,6 +134,9 @@ class GradingController extends DefaultController
         $singleData = $this->defaultDataQuery()->where('gradings.id', $id)->first();
         unset($singleData['id']);
 
+        // hapus yang tidak perlu ditampilkan
+        unset($singleData['division_id']);
+
         $data['detail'] = $singleData;
 
         return view('easyadmin::backend.idev.show-default', $data);

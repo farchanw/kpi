@@ -216,6 +216,9 @@ class KpiTemplateController extends DefaultController
     {
         $singleData = $this->defaultDataQuery()->where('kpi_templates.id', $id)->first();
         unset($singleData['id']);
+        
+        // hapus yang tidak perlu ditampilkan
+        unset($singleData['aspect_id']);
 
         $data['detail'] = $singleData;
 

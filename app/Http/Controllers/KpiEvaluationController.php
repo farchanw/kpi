@@ -168,6 +168,10 @@ class KpiEvaluationController extends DefaultController
         $singleData = $this->defaultDataQuery()->where('kpi_evaluations.id', $id)->first();
         unset($singleData['id']);
 
+        // hapus yang tidak perlu ditampilkan
+        unset($singleData['user_id']);
+        unset($singleData['evaluator_id']);
+
         $data['detail'] = $singleData;
 
         return view('easyadmin::backend.idev.show-default', $data);

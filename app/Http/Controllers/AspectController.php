@@ -120,6 +120,9 @@ class AspectController extends DefaultController
         $singleData = $this->defaultDataQuery()->where('aspects.id', $id)->first();
         unset($singleData['id']);
 
+        // hapus yang tidak perlu ditampilkan
+        unset($singleData['grading_id']);
+
         $data['detail'] = $singleData;
 
         return view('easyadmin::backend.idev.show-default', $data);

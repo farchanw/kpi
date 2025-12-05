@@ -282,6 +282,18 @@ class KpiEntryController extends DefaultController
 
             $this->afterMainInsert($insert, $request);
 
+            // Update total_weight and final_score in kpi_evaluations table
+            $kpiEvaluation = KpiEvaluation::find($insert->kpi_evaluation_id);
+            if ($kpiEvaluation) {
+                $totalWeight = KpiEntry::where('kpi_evaluation_id', $kpiEvaluation->id)->sum('weight');
+                $finalScore = KpiEntry::where('kpi_evaluation_id', $kpiEvaluation->id)
+                    ->select(DB::raw('SUM((actual / target) * weight) as final_score'))
+                    ->value('final_score');
+                $kpiEvaluation->total_weight = $totalWeight;
+                $kpiEvaluation->final_score = $finalScore;
+                $kpiEvaluation->save();
+            }
+
             DB::commit();
 
             return response()->json([
@@ -300,10 +312,93 @@ class KpiEntryController extends DefaultController
         }
     }
 
+    protected function update(Request $request, $id)
+    {
+        $rules = $this->rules($id);
+        
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $messageErrors = (new Validation)->modify($validator, $rules);
+
+            return response()->json([
+                'status' => false,
+                'alert' => 'danger',
+                'message' => 'Required Form',
+                'validation_errors' => $messageErrors,
+            ], 200);
+        }
+
+        $beforeUpdateResponse = $this->beforeMainUpdate($id, $request);
+        if ($beforeUpdateResponse !== null) {
+            return $beforeUpdateResponse; // Return early if there's a response
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $appendUpdate = $this->appendUpdate($request);
+
+            $change = $this->modelClass::where('id', $id)->first();
+            foreach ($this->fields('edit', $id) as $key => $th) {
+                if ($request[$th['name']]) {
+                    $change->{$th['name']} = $request[$th['name']];
+                }
+            }
+            if (array_key_exists('columns', $appendUpdate)) {
+                foreach ($appendUpdate['columns'] as $key => $as) {
+                    $change->{$as['name']} = $as['value'];
+                }
+            }
+            
+            $change->save();
+
+            $this->afterMainUpdate($change, $request);
+
+            // Update total_weight and final_score in kpi_evaluations table
+            $kpiEvaluation = KpiEvaluation::find($change->kpi_evaluation_id);
+            if ($kpiEvaluation) {
+                $totalWeight = KpiEntry::where('kpi_evaluation_id', $kpiEvaluation->id)->sum('weight');
+                if($change->kpi_type == 'Maximize'){
+                    $finalScore = KpiEntry::where('kpi_evaluation_id', $kpiEvaluation->id)
+                    ->select(DB::raw('SUM((actual / target) * weight) as final_score'))
+                    ->value('final_score');
+                }
+                if($change->kpi_type == 'Minimize'){
+                    $finalScore = KpiEntry::where('kpi_evaluation_id', $kpiEvaluation->id)
+                    ->select(DB::raw('SUM((target / actual) * weight) as final_score'))
+                    ->value('final_score');
+                }
+                $kpiEvaluation->total_weight = $totalWeight;
+                $kpiEvaluation->final_score = $finalScore;
+                $kpiEvaluation->save();
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'alert' => 'success',
+                'message' => 'Data Was Updated Successfully',
+            ], 200);
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     protected function show($id)
     {
         $singleData = $this->defaultDataQuery()->where('kpi_entries.id', $id)->first();
         unset($singleData['id']);
+
+        // hapus yang tidak perlu ditampilkan
+        unset($singleData['kpi_evaluation_id']);
+        unset($singleData['kpi_template_id']);
+        
 
         $data['detail'] = $singleData;
 

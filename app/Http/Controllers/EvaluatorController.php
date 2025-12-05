@@ -105,6 +105,9 @@ class EvaluatorController extends DefaultController
         $singleData = $this->defaultDataQuery()->where('evaluators.id', $id)->first();
         unset($singleData['id']);
 
+        // hapus yang tidak perlu ditampilkan
+        unset($singleData['user_id']);
+
         $data['detail'] = $singleData;
 
         return view('easyadmin::backend.idev.show-default', $data);

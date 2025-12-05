@@ -40,6 +40,15 @@ class AspectController extends DefaultController
                     ['name' => 'Grading', 'column' => 'grading'], 
             ]
         ];
+
+        $this->importScripts = [
+            ['source' => asset('vendor/select2/select2.min.js')],
+            ['source' => asset('vendor/select2/select2-initialize.js')]
+        ];
+        $this->importStyles = [
+            ['source' => asset('vendor/select2/select2.min.css')],
+            //['source' => asset('vendor/select2/select2-style.css')]
+        ];
     }
 
 
@@ -65,7 +74,7 @@ class AspectController extends DefaultController
                         'value' => (isset($edit)) ? $edit->name : ''
                     ],
                     [
-                        'type' => 'select',
+                        'type' => 'select2',
                         'label' => 'Grading',
                         'name' =>  'grading_id',
                         'class' => 'col-md-12 my-2',

@@ -5,12 +5,13 @@ use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\GradingController;
 use App\Http\Controllers\AspectController;
 use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\IndicatorController;
 use App\Http\Controllers\KpiTemplateController;
 use App\Http\Controllers\EvaluatorController;
-use App\Http\Controllers\KpiEntryController;
-use App\Http\Controllers\KpiEvaluationController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EmployeeEvaluationController;
+use App\Http\Controllers\EmployeeEvaluationEntryController;
+use App\Http\Controllers\DivisionEvaluationController;
+use App\Http\Controllers\DivisionEvaluationEntryController;
 
 Route::resource('dashboard', DashboardController::class);
 Route::get('dashboard-api', [DashboardController::class, 'indexApi'])->name('dashboard.listapi');
@@ -54,14 +55,26 @@ Route::get('evaluator-export-pdf-default', [EvaluatorController::class, 'exportP
 Route::get('evaluator-export-excel-default', [EvaluatorController::class, 'exportExcel'])->name('evaluator.export-excel-default');
 Route::post('evaluator-import-excel-default', [EvaluatorController::class, 'importExcel'])->name('evaluator.import-excel-default');
 
-Route::resource('kpi-entry', KpiEntryController::class);
-Route::get('kpi-entry-api', [KpiEntryController::class, 'indexApi'])->name('kpi-entry.listapi');
-Route::get('kpi-entry-export-pdf-default', [KpiEntryController::class, 'exportPdf'])->name('kpi-entry.export-pdf-default');
-Route::get('kpi-entry-export-excel-default', [KpiEntryController::class, 'exportExcel'])->name('kpi-entry.export-excel-default');
-Route::post('kpi-entry-import-excel-default', [KpiEntryController::class, 'importExcel'])->name('kpi-entry.import-excel-default');
+Route::resource('employee-evaluation', EmployeeEvaluationController::class);
+Route::get('employee-evaluation-api', [EmployeeEvaluationController::class, 'indexApi'])->name('employee-evaluation.listapi');
+Route::get('employee-evaluation-export-pdf-default', [EmployeeEvaluationController::class, 'exportPdf'])->name('employee-evaluation.export-pdf-default');
+Route::get('employee-evaluation-export-excel-default', [EmployeeEvaluationController::class, 'exportExcel'])->name('employee-evaluation.export-excel-default');      
+Route::post('employee-evaluation-import-excel-default', [EmployeeEvaluationController::class, 'importExcel'])->name('employee-evaluation.import-excel-default'); 
 
-Route::resource('kpi-evaluation', KpiEvaluationController::class);
-Route::get('kpi-evaluation-api', [KpiEvaluationController::class, 'indexApi'])->name('kpi-evaluation.listapi');
-Route::get('kpi-evaluation-export-pdf-default', [KpiEvaluationController::class, 'exportPdf'])->name('kpi-evaluation.export-pdf-default');
-Route::get('kpi-evaluation-export-excel-default', [KpiEvaluationController::class, 'exportExcel'])->name('kpi-evaluation.export-excel-default');
-Route::post('kpi-evaluation-import-excel-default', [KpiEvaluationController::class, 'importExcel'])->name('kpi-evaluation.import-excel-default');
+Route::resource('employee-evaluation-entry', EmployeeEvaluationEntryController::class);
+Route::get('employee-evaluation-entry-api', [EmployeeEvaluationEntryController::class, 'indexApi'])->name('employee-evaluation-entry.listapi');
+Route::get('employee-evaluation-entry-export-pdf-default', [EmployeeEvaluationEntryController::class, 'exportPdf'])->name('employee-evaluation-entry.export-pdf-default');
+Route::get('employee-evaluation-entry-export-excel-default', [EmployeeEvaluationEntryController::class, 'exportExcel'])->name('employee-evaluation-entry.export-excel-default');
+Route::post('employee-evaluation-entry-import-excel-default', [EmployeeEvaluationEntryController::class, 'importExcel'])->name('employee-evaluation-entry.import-excel-default');
+
+Route::resource('division-evaluation', DivisionEvaluationController::class);
+Route::get('division-evaluation-api', [DivisionEvaluationController::class, 'indexApi'])->name('division-evaluation.listapi');
+Route::get('division-evaluation-export-pdf-default', [DivisionEvaluationController::class, 'exportPdf'])->name('division-evaluation.export-pdf-default');
+Route::get('division-evaluation-export-excel-default', [DivisionEvaluationController::class, 'exportExcel'])->name('division-evaluation.export-excel-default');      
+Route::post('division-evaluation-import-excel-default', [DivisionEvaluationController::class, 'importExcel'])->name('division-evaluation.import-excel-default');     
+
+Route::resource('division-evaluation-entry', DivisionEvaluationEntryController::class);
+Route::get('division-evaluation-entry-api', [DivisionEvaluationEntryController::class, 'indexApi'])->name('division-evaluation-entry.listapi');
+Route::get('division-evaluation-entry-export-pdf-default', [DivisionEvaluationEntryController::class, 'exportPdf'])->name('division-evaluation-entry.export-pdf-default');
+Route::get('division-evaluation-entry-export-excel-default', [DivisionEvaluationEntryController::class, 'exportExcel'])->name('division-evaluation-entry.export-excel-default');
+Route::post('division-evaluation-entry-import-excel-default', [DivisionEvaluationEntryController::class, 'importExcel'])->name('division-evaluation-entry.import-excel-default');

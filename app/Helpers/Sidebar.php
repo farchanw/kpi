@@ -129,15 +129,6 @@ class Sidebar
         ], 
         */
         [
-          'name' => 'Kpi Evaluation',
-          'icon' => 'ti ti-menu',
-          'key' => 'kpi-evaluation',
-          'base_key' => 'kpi-evaluation',
-          'visibility' => true,
-          'ajax_load' => false,
-          'childrens' => []
-        ],
-        [
           'name' => 'Kpi Template',
           'icon' => 'ti ti-menu',
           'key' => 'kpi-template',
@@ -147,10 +138,37 @@ class Sidebar
           'childrens' => []
         ],
         [
-          'name' => 'Kpi Entry',
+          'name' => 'Employee Evaluation',
           'icon' => 'ti ti-menu',
-          'key' => 'kpi-entry',
-          'base_key' => 'kpi-entry',
+          'key' => 'employee-evaluation',
+          'base_key' => 'employee-evaluation',
+          'visibility' => true,
+          'ajax_load' => false,
+          'childrens' => []
+        ],
+        [
+          'name' => 'Employee Evaluation Entry',
+          'icon' => 'ti ti-menu',
+          'key' => 'employee-evaluation-entry',
+          'base_key' => 'employee-evaluation-entry',
+          'visibility' => true,
+          'ajax_load' => false,
+          'childrens' => []
+        ],
+        [
+          'name' => 'Division Evaluation',
+          'icon' => 'ti ti-menu',
+          'key' => 'division-evaluation',
+          'base_key' => 'division-evaluation',
+          'visibility' => true,
+          'ajax_load' => false,
+          'childrens' => []
+        ],
+        [
+          'name' => 'Division Evaluation Entry',
+          'icon' => 'ti ti-menu',
+          'key' => 'division-evaluation-entry',
+          'base_key' => 'division-evaluation-entry',
           'visibility' => true,
           'ajax_load' => false,
           'childrens' => []

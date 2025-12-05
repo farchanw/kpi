@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DivisionEvaluation;
+use App\Models\Division;
 use App\Models\Evaluator;
-use App\Models\KpiEvaluation;
-use App\Models\User;
-use App\Models\Employee;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Idev\EasyAdmin\app\Http\Controllers\DefaultController;
+use Termwind\Components\Div;
 
-class KpiEvaluationController extends DefaultController
+class DivisionEvaluationController extends DefaultController
 {
-    protected $modelClass = KpiEvaluation::class;
+    protected $modelClass = DivisionEvaluation::class;
     protected $title;
     protected $generalUri;
     protected $tableHeaders;
@@ -22,14 +20,14 @@ class KpiEvaluationController extends DefaultController
 
     public function __construct()
     {
-        $this->title = 'Kpi Evaluation';
-        $this->generalUri = 'kpi-evaluation';
+        $this->title = 'Division Evaluation';
+        $this->generalUri = 'division-evaluation';
         // $this->arrPermissions = [];
         $this->actionButtons = ['btn_edit', 'btn_show', 'btn_delete'];
 
         $this->tableHeaders = [
                     ['name' => 'No', 'column' => '#', 'order' => true],
-                    ['name' => 'User id', 'column' => 'user', 'order' => true],
+                    ['name' => 'Division id', 'column' => 'division', 'order' => true],
                     ['name' => 'Evaluator id', 'column' => 'evaluator', 'order' => true],
                     ['name' => 'Evaluation date', 'column' => 'evaluation_date', 'order' => true],
                     ['name' => 'Total weight', 'column' => 'total_weight', 'order' => true],
@@ -40,9 +38,9 @@ class KpiEvaluationController extends DefaultController
 
 
         $this->importExcelConfig = [ 
-            'primaryKeys' => ['user_id'],
+            'primaryKeys' => ['division_id'],
             'headers' => [
-                    ['name' => 'User id', 'column' => 'user_id'],
+                    ['name' => 'Division id', 'column' => 'division_id'],
                     ['name' => 'Evaluator id', 'column' => 'evaluator_id'],
                     ['name' => 'Evaluation date', 'column' => 'evaluation_date'],
                     ['name' => 'Total weight', 'column' => 'total_weight'],
@@ -59,29 +57,20 @@ class KpiEvaluationController extends DefaultController
             $edit = $this->modelClass::where('id', $id)->first();
         }
 
-        /*
-        Jika pakai table `users`
-        $userOptions = User::select(['id as value', 'name as text'])->get();
-        */
-
-        /*
-        Jika pakai table `employees`
-        $userOptions = Employee::select(['id as value', 'name as text'])->get();
-        */
-
-        $userOptions = Employee::select(['id as value', 'name as text'])->get();
+        $divisionOptions = Division::select(['id as value', 'name as text'])->get();
         $evaluatorOptions = Evaluator::join('users', 'users.id', '=', 'evaluators.user_id')
-            ->select(['evaluators.id as value', 'users.name as text'])->get();
+            ->select('users.name as text', 'evaluators.id as value')
+            ->get();
 
         $fields = [
                     [
                         'type' => 'select2',
-                        'label' => 'User',
-                        'name' =>  'user_id',
+                        'label' => 'Division',
+                        'name' =>  'division_id',
                         'class' => 'col-md-12 my-2',
-                        'required' => $this->flagRules('user_id', $id),
-                        'value' => (isset($edit)) ? $edit->user_id : '',
-                        'options' => $userOptions,
+                        'required' => $this->flagRules('division_id', $id),
+                        'value' => (isset($edit)) ? $edit->division_id : '',
+                        'options' => $divisionOptions
                     ],
                     [
                         'type' => 'select2',
@@ -89,8 +78,8 @@ class KpiEvaluationController extends DefaultController
                         'name' =>  'evaluator_id',
                         'class' => 'col-md-12 my-2',
                         'required' => $this->flagRules('evaluator_id', $id),
-                        'value' => (isset($edit)) ? $edit->evaluator_id : Auth::id(),
-                        'options' => $evaluatorOptions
+                        'value' => (isset($edit)) ? $edit->evaluator_id : '',
+                        'options' => $evaluatorOptions,
                     ],
                     [
                         'type' => 'date',
@@ -125,9 +114,11 @@ class KpiEvaluationController extends DefaultController
     protected function rules($id = null)
     {
         $rules = [
-                    'user_id' => 'required|string',
+                    'division_id' => 'required|string',
                     'evaluator_id' => 'required|string',
                     'evaluation_date' => 'required|string',
+                    // 'total_weight' => 'required|string',
+                    // 'final_score' => 'required|string',
         ];
 
         return $rules;
@@ -148,24 +139,24 @@ class KpiEvaluationController extends DefaultController
         }
 
         /* Jika pakai table `employees` */
-        $dataQueries = KpiEvaluation::join('evaluators', 'evaluators.id', '=', 'kpi_evaluations.evaluator_id')
+        $dataQueries = $this->modelClass::join('evaluators', 'evaluators.id', '=', 'division_evaluations.evaluator_id')
             ->join('users as evaluator_users', 'evaluator_users.id', '=', 'evaluators.user_id')
-            ->join('employees as evaluated_users', 'evaluated_users.id', '=', 'kpi_evaluations.user_id')
+            ->join('divisions as evaluated_users', 'evaluated_users.id', '=', 'division_evaluations.division_id')
             ->where($filters)
             ->where(function ($query) use ($orThose) {
                 //$query->where('evaluated_users.name', 'LIKE', '%' . $orThose . '%');
                 //$query->orWhere('evaluator_users.name', 'LIKE', '%' . $orThose . '%');
-                //$query->orWhere('kpi_evaluations.evaluation_date', 'LIKE', '%' . $orThose . '%');
+                //$query->orWhere('division_evaluations.evaluation_date', 'LIKE', '%' . $orThose . '%');
             })
             ->orderBy($orderBy, $orderState)
-            ->select('kpi_evaluations.*', 'evaluated_users.name as user', 'evaluator_users.name as evaluator');
+            ->select('division_evaluations.*', 'evaluated_users.name as division', 'evaluator_users.name as evaluator');
 
         return $dataQueries;
     }
 
     protected function show($id)
     {
-        $singleData = $this->defaultDataQuery()->where('kpi_evaluations.id', $id)->first();
+        $singleData = $this->defaultDataQuery()->where('division_evaluations.id', $id)->first();
         unset($singleData['id']);
 
         // hapus yang tidak perlu ditampilkan

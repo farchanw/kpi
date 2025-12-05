@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kpi_evaluations', function (Blueprint $table) {
+        Schema::create('employee_evaluations', function (Blueprint $table) {
             $table->id();
 
             // Jika pakai table `users`

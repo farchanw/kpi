@@ -5,24 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class KpiEntry extends Model
+class EmployeeEvaluation extends Model
 {
     use HasFactory;
 
-    protected $table = 'kpi_entries';
+    protected $table = 'employee_evaluations';
     protected $primaryKey = 'id';
-    protected $fillable = ["kpi_evaluation_id","key_perf_area","kpi_template_id","weight","target","actual"];
+    protected $fillable = ["user_id","evaluator_id","evaluation_date","total_weight","final_score"];
     protected $appends = ['btn_delete', 'btn_edit', 'btn_show'];
 
-    public function evaluation()
-    {
-        return $this->belongsTo(KpiEvaluation::class, 'kpi_evaluation_id');
-    }
-
-    public function template()
-    {
-        return $this->belongsTo(KpiTemplate::class, 'kpi_template_id');
-    }
 
     public function getBtnDeleteAttribute()
     {
